@@ -4,6 +4,7 @@ const { graphqlHTTP } = require("express-graphql");
 const { buildSchema } = require("graphql");
 dotenv.config({ path: "./config/config.env" });
 const connectDB = require("./config/db");
+const Event = require("./models/Event");
 const app = express();
 
 app.use(express.json());
@@ -50,23 +51,37 @@ app.use(
       events: () => {
         return events;
       },
-      createEvent: ({ eventInput }) => {
+      createEvent: async ({ eventInput }) => {
         const event = {
-          _id: Math.random().toString(),
           title: eventInput.title,
           description: eventInput.description,
           price: +eventInput.price,
-          date: eventInput.date
+          date: new Date(eventInput.date)
         };
-        events.push(event);
-        return event;
+
+        try {
+          const newEvent = new Event(event);
+          return await newEvent.save();
+        } catch (err) {
+          console.error(err);
+        }
       }
     },
     graphiql: true
   })
 );
 
-app.listen(PORT, () => {
+// To load server
+const server = app.listen(PORT, () => {
   console.log(`
 Server running in ${MODE} Mode, Listening on Port ${PORT}`);
+});
+
+// To close the server incase the database is not connecting
+process.on("unhandledRejection", err => {
+  console.log(err.message);
+
+  server.close(() => {
+    process.exit(1);
+  });
 });
