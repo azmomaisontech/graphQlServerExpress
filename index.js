@@ -3,9 +3,12 @@ const dotenv = require("dotenv");
 const { graphqlHTTP } = require("express-graphql");
 const { buildSchema } = require("graphql");
 dotenv.config({ path: "./config/config.env" });
+const connectDB = require("./config/db");
 const app = express();
 
 app.use(express.json());
+
+connectDB();
 
 const PORT = process.env.PORT || 5000;
 const MODE = process.env.NODE_ENV;
