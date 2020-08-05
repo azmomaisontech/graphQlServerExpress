@@ -17,6 +17,10 @@ const EventSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: [true, "Please enter a date"]
+  },
+  creator: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User"
   }
 });
 
