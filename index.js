@@ -1,12 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const { graphqlHTTP } = require("express-graphql");
-const { buildSchema } = require("graphql");
-const bcrypt = require("bcryptjs");
 dotenv.config({ path: "./config/config.env" });
 const connectDB = require("./config/db");
-const Event = require("./models/Event");
-const User = require("./models/User");
+const graphQlSchema = require("./graphql/schema/index");
+const graphQlResolver = require("./graphql/resolver/index");
 
 const app = express();
 
@@ -17,102 +15,11 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 const MODE = process.env.NODE_ENV;
 
-const events = [];
-
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: buildSchema(`
-    type Event {
-      _id: ID!
-      title: String!
-      price: Float!
-      date: String! 
-      creator: User!
-    }
-
-    type User {
-      _id: ID!
-      email: String!
-      password: String
-      createdEvents: [Event!]
-    }
-
-    input EventInput {
-      title: String!
-      description: String!
-      price: Float!
-      date: String!
-    }
-
-    input UserInput {
-      email: String!
-      password: String!
-    }
-
-    type RootQuery {
-        events: [Event!]!
-    }
-
-    type RootMutation {
-        createEvent(eventInput: EventInput): Event
-        createUser(userInput: UserInput): User
-    }
-
-    schema {
-        query: RootQuery
-        mutation: RootMutation
-    }
-    `),
-    rootValue: {
-      events: async () => {
-        try {
-          return await Event.find().populate("creator");
-        } catch (err) {
-          console.error(err);
-        }
-      },
-      createEvent: async ({ eventInput }) => {
-        const event = {
-          title: eventInput.title,
-          description: eventInput.description,
-          price: +eventInput.price,
-          date: new Date(eventInput.date),
-          creator: "5f2aae65b809bc45d6cd5f8f"
-        };
-
-        try {
-          const newEvent = new Event(event);
-          return await newEvent.save();
-        } catch (err) {
-          console.error(err);
-        }
-      },
-      users: async () => {
-        try {
-          return await User.find();
-        } catch (err) {
-          console.log(err);
-        }
-      },
-      createUser: async ({ userInput }) => {
-        const alreadyExist = await User.findOne({ email: userInput.email });
-        if (alreadyExist) throw new Error("User already exists");
-
-        const salt = await bcrypt.genSalt(10);
-        const password = await bcrypt.hash(userInput.password, salt);
-        const user = {
-          email: userInput.email,
-          password: password
-        };
-        try {
-          const newUser = new User(user);
-          return newUser.save();
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    },
+    schema: graphQlSchema,
+    rootValue: graphQlResolver,
     graphiql: true
   })
 );
