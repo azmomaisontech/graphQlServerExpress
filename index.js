@@ -7,6 +7,7 @@ dotenv.config({ path: "./config/config.env" });
 const connectDB = require("./config/db");
 const Event = require("./models/Event");
 const User = require("./models/User");
+
 const app = express();
 
 app.use(express.json());
@@ -27,12 +28,14 @@ app.use(
       title: String!
       price: Float!
       date: String! 
+      creator: User!
     }
 
     type User {
       _id: ID!
       email: String!
       password: String
+      createdEvents: [Event!]
     }
 
     input EventInput {
@@ -64,7 +67,7 @@ app.use(
     rootValue: {
       events: async () => {
         try {
-          return await Event.find();
+          return await Event.find().populate("creator");
         } catch (err) {
           console.error(err);
         }
@@ -74,7 +77,8 @@ app.use(
           title: eventInput.title,
           description: eventInput.description,
           price: +eventInput.price,
-          date: new Date(eventInput.date)
+          date: new Date(eventInput.date),
+          creator: "5f2aae65b809bc45d6cd5f8f"
         };
 
         try {
@@ -92,6 +96,9 @@ app.use(
         }
       },
       createUser: async ({ userInput }) => {
+        const alreadyExist = await User.findOne({ email: userInput.email });
+        if (alreadyExist) throw new Error("User already exists");
+
         const salt = await bcrypt.genSalt(10);
         const password = await bcrypt.hash(userInput.password, salt);
         const user = {
