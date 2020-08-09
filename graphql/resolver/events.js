@@ -9,6 +9,14 @@ module.exports = {
     }
   },
 
+  singleEvent: async args => {
+    try {
+      return await Event.findById(args.eventId).populate("creator");
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
   createEvent: async ({ eventInput }) => {
     const event = {
       title: eventInput.title,

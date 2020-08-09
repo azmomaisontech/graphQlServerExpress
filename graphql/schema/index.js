@@ -38,6 +38,7 @@ input UserInput {
 
 type RootQuery {
     events: [Event!]!
+    singleEvent(eventId: ID): Event!
     users: [User!]!
     bookings: [Booking!]!
 }
