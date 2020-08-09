@@ -78,5 +78,18 @@ module.exports = {
     } catch (err) {
       console.error(err);
     }
+  },
+  cancelBooking: async args => {
+    try {
+      let booking = await Booking.findById(args.bookingId).populate({
+        path: "event",
+        populate: {
+          path: "creator"
+        }
+      });
+      return await booking.remove();
+    } catch (err) {
+      console.error(err);
+    }
   }
 };
