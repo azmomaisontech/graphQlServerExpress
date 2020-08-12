@@ -37,6 +37,11 @@ input EventInput {
   date: String!
 }
 
+input LoginInput {
+    email: String!
+    password: String!
+}
+
 input UserInput {
   email: String!
   password: String!
@@ -45,7 +50,6 @@ input UserInput {
 type RootQuery {
     events: [Event!]!
     singleEvent(eventId: ID): Event!
-    login(email: String!, password: String!): AuthData!
     users: [User!]!
     bookings: [Booking!]!
 }
@@ -53,6 +57,7 @@ type RootQuery {
 type RootMutation {
     createEvent(eventInput: EventInput): Event
     createUser(userInput: UserInput): User
+    login(loginInput: LoginInput): AuthData!
     bookEvent(eventId: ID): Booking!
     cancelBooking(bookingId: ID!): Booking!
 }

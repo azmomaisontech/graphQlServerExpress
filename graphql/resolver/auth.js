@@ -29,22 +29,19 @@ module.exports = {
     }
   },
 
-  login: async ({ email, password }) => {
-    try {
-      const registeredUser = await User.findOne({ email });
-      if (!registeredUser) throw new Error("Username or password not correct");
+  login: async ({ loginInput }) => {
+    //I am not using try catch here because i want the errors to be shown on the graphiQl
+    const registeredUser = await User.findOne({ email: loginInput.email }).select("+password");
+    if (!registeredUser) throw new Error("Username or password not correct");
 
-      const decoded = await bcrypt.compare(password, registeredUser.password);
-      if (!decoded) throw new Error("Username or password not correct");
+    const isMatch = await bcrypt.compare(loginInput.password, registeredUser.password);
+    console.log(isMatch);
+    if (!isMatch) throw new Error("Username or password not correct");
 
-      const token = jwt.sign({ userId: registeredUser.id, email: registeredUser.email }, process.env.JWTKey, {
-        expiresIn: "1h"
-      });
+    const token = jwt.sign({ userId: registeredUser.id, email: registeredUser.email }, process.env.JWTKey, {
+      expiresIn: "1h"
+    });
 
-      console.log(user);
-      return { userId: user.id, token: token, tokenExpiration: 1 };
-    } catch (err) {
-      console.log(err);
-    }
+    return { userId: registeredUser.id, token, tokenExpiration: 1 };
   }
 };
