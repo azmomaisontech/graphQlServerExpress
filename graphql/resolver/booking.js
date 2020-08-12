@@ -1,7 +1,7 @@
 const Booking = require("../../models/Booking");
 
 module.exports = {
-  bookings: async () => {
+  bookings: async req => {
     try {
       return await Booking.find().populate("user event");
     } catch (err) {
@@ -9,7 +9,10 @@ module.exports = {
     }
   },
 
-  bookEvent: async args => {
+  bookEvent: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Not authenticated");
+    }
     try {
       const booking = new Booking({
         user: "5f2aae65b809bc45d6cd5f8f",
@@ -26,7 +29,10 @@ module.exports = {
     }
   },
 
-  cancelBooking: async args => {
+  cancelBooking: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Not authenticated");
+    }
     try {
       let booking = await Booking.findById(args.bookingId).populate({
         path: "event",

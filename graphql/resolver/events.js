@@ -17,13 +17,16 @@ module.exports = {
     }
   },
 
-  createEvent: async ({ eventInput }) => {
+  createEvent: async ({ eventInput }, req) => {
+    if (!req.isAuth) {
+      throw new Error("Not authenticated");
+    }
     const event = {
       title: eventInput.title,
       description: eventInput.description,
       price: +eventInput.price,
       date: new Date(eventInput.date),
-      creator: "5f2aae65b809bc45d6cd5f8f"
+      creator: req.userId
     };
 
     try {

@@ -35,11 +35,10 @@ module.exports = {
     if (!registeredUser) throw new Error("Username or password not correct");
 
     const isMatch = await bcrypt.compare(loginInput.password, registeredUser.password);
-    console.log(isMatch);
     if (!isMatch) throw new Error("Username or password not correct");
 
     const token = jwt.sign({ userId: registeredUser.id, email: registeredUser.email }, process.env.JWTKey, {
-      expiresIn: "1h"
+      expiresIn: "30d"
     });
 
     return { userId: registeredUser.id, token, tokenExpiration: 1 };

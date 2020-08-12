@@ -5,6 +5,7 @@ dotenv.config({ path: "./config/config.env" });
 const connectDB = require("./config/db");
 const graphQlSchema = require("./graphql/schema/index");
 const graphQlResolver = require("./graphql/resolver/index");
+const authMiddleware = require("./middleware/auth");
 
 const app = express();
 
@@ -14,6 +15,8 @@ connectDB();
 
 const PORT = process.env.PORT || 5000;
 const MODE = process.env.NODE_ENV;
+
+app.use(authMiddleware);
 
 app.use(
   "/graphql",
