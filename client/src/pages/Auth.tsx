@@ -7,6 +7,8 @@ const Auth: React.FC = () => {
     password: ""
   });
 
+  const { email, password } = user;
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(user);
@@ -14,7 +16,7 @@ const Auth: React.FC = () => {
     const requestBody = {
       query: `
         mutation{
-            createUser(userInput: ${user}) {
+            createUser(userInput: {email: "${email}" , password: "${password}"}) {
                 _id
                 email
             }
@@ -36,8 +38,6 @@ const Auth: React.FC = () => {
       [e.target.name]: e.target.value
     });
   };
-
-  const { email, password } = user;
 
   return (
     <form onSubmit={handleSubmit} className="auth-form">
