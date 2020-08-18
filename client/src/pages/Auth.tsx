@@ -12,7 +12,7 @@ const Auth: React.FC = () => {
         <label htmlFor="password">Password</label>
         <input type="password" name="password" id="password" />
       </div>
-      <div className="form-action">
+      <div className="form-actions">
         <button type="submit">Submit</button>
         <button type="button">Switch to SignUp</button>
       </div>
