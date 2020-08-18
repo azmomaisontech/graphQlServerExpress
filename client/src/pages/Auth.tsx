@@ -6,22 +6,36 @@ const Auth: React.FC = () => {
     email: "",
     password: ""
   });
+  const [isLogin, setIsLogin] = useState(true);
 
   const { email, password } = user;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(user);
 
-    const requestBody = {
-      query: `
-        mutation{
-            createUser(userInput: {email: "${email}" , password: "${password}"}) {
-                _id
-                email
-            }
-        }`
-    };
+    let requestBody;
+    if (isLogin) {
+      requestBody = {
+        query: `
+              mutation{
+                  login(loginInput: {email: "${email}" , password: "${password}"}) {
+                      userId
+                      token
+                      tokenExpiration
+                  }
+              }`
+      };
+    } else {
+      requestBody = {
+        query: `
+                  mutation{
+                      createUser(userInput: {email: "${email}" , password: "${password}"}) {
+                          _id
+                          email
+                      }
+                  }`
+      };
+    }
 
     fetch("http://localhost:5000/graphql", {
       method: "POST",
@@ -29,7 +43,19 @@ const Auth: React.FC = () => {
       headers: {
         "Content-Type": "application/json"
       }
-    });
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed");
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +63,10 @@ const Auth: React.FC = () => {
       ...user,
       [e.target.name]: e.target.value
     });
+  };
+
+  const switchModeHandler = () => {
+    setIsLogin(!isLogin);
   };
 
   return (
@@ -51,7 +81,9 @@ const Auth: React.FC = () => {
       </div>
       <div className="form-actions">
         <button type="submit">Submit</button>
-        <button type="button">Switch to SignUp</button>
+        <button type="button" onClick={switchModeHandler}>
+          Switch to {isLogin ? "Signup" : "Login"}
+        </button>
       </div>
     </form>
   );
