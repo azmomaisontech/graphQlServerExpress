@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 export enum AuthEnum {
   registerUser = "REGISTER_USER",
   googleUserAuth = "GOOGLE_USER_AUTH",
@@ -13,21 +15,14 @@ export enum AuthEnum {
 }
 
 export type GraphlqlStateProps = {
-  isAuthenticated: boolean;
-  loading: boolean;
-  error: string | null;
-  user:
-    | { role: string; id: string; googleId: string; name: string; email: string; createdAt: Date; updatedAt: Date }
-    | string
-    | null;
-  success: boolean;
+  token: null | string;
+  userId: null | string;
 };
 
 export interface FormData {
-  name?: string;
-  email: string;
-  password: string;
-  role?: string;
+  userId: string;
+  token: string;
+  tokenExpiration: number;
 }
 
 export interface UpdateName {
@@ -44,14 +39,8 @@ export interface UpdatePassword {
 }
 
 export interface ContextProps extends GraphlqlStateProps {
-  setLoading: () => void;
   registerUser: (dataform: FormData) => void;
   loginUser: (dataform: FormData) => void;
-  loadUser: () => void;
-  updateUserName: (dataForm: UpdateName) => void;
-  updateUserEmail: (dataForm: UpdateEmail) => void;
-  updateUserPassword: (dataForm: UpdatePassword) => void;
-  logoutUser: () => void;
 }
 
 export interface Props {

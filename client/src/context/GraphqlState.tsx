@@ -12,11 +12,8 @@ import {
 } from "./type";
 
 const initialState: GraphlqlStateProps = {
-  isAuthenticated: false,
-  loading: false,
-  user: null,
-  error: null,
-  success: false
+  userId: null,
+  token: null
 };
 
 const AuthContext = createContext<Partial<ContextProps>>({});
@@ -25,7 +22,6 @@ const AuthState: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(GraphqlReducer, initialState);
 
   //Methods
-
   //Sets Loading to true
   const setLoading = () => {
     dispatch({
@@ -37,57 +33,23 @@ const AuthState: React.FC<Props> = ({ children }) => {
   const authUser = async (formData: FormData, url: string, type: string) => {};
 
   //Load user after registering or login
-  const loadUser = async () => {};
+  const loadUser = async (formData: FormData) => {};
 
   //Register new user
-  const registerUser = async (formData: FormData) => {
-    const url = "api/v1/auth/register";
-    const type = AuthEnum.registerUser;
-    await authUser(formData, url, type);
-  };
+  const registerUser = async (formData: FormData) => {};
 
   //Login  user
-  const loginUser = async (formData: FormData) => {
-    const url = "api/v1/auth/login";
-    const type = AuthEnum.loginUser;
-    await authUser(formData, url, type);
-  };
-
-  //Update user name
-  const updateUserName = async (formData: UpdateName) => {};
-
-  //Update user email
-  const updateUserEmail = async (formData: UpdateEmail) => {};
-
-  //Update user password
-  const updateUserPassword = async (formData: UpdatePassword) => {};
+  const loginUser = async (formData: FormData) => {};
 
   const logoutUser = async () => {};
-
-  //Clear Success field
-  const clearSuccess = () => {
-    setTimeout(() => {
-      dispatch({
-        type: AuthEnum.clearSuccess
-      });
-    }, 2000);
-  };
 
   return (
     <AuthContext.Provider
       value={{
-        loading: state.loading,
-        isAuthenticated: state.isAuthenticated,
-        error: state.error,
-        user: state.user,
-        success: state.success,
+        userId: state.userId,
+        token: state.userId,
         registerUser,
-        loginUser,
-        loadUser,
-        updateUserName,
-        updateUserEmail,
-        updateUserPassword,
-        logoutUser
+        loginUser
       }}
     >
       {children}

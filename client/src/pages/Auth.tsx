@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/GraphqlState";
 import "../pageStyles/Auth.css";
+import { async } from "q";
 
 const Auth: React.FC = () => {
+  const graphqlContext = useContext(AuthContext);
+  const { loginUser } = graphqlContext;
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -10,7 +14,7 @@ const Auth: React.FC = () => {
 
   const { email, password } = user;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let requestBody;
@@ -36,26 +40,29 @@ const Auth: React.FC = () => {
                   }`
       };
     }
-
-    fetch("http://localhost:5000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed");
+    try {
+      const res = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json"
         }
-        return res.json();
-      })
-      .then(resData => {
-        console.log(resData);
-      })
-      .catch(err => {
-        console.log(err);
       });
+
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Failed");
+      }
+      const resData = await res.json();
+
+      if (resData.data.login) {
+        const { token, userId, tokenExpiration } = resData.data.login;
+        if (loginUser) {
+          loginUser({ token, userId, tokenExpiration });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
