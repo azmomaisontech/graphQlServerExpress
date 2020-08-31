@@ -23,23 +23,66 @@ const AuthState: React.FC<Props> = ({ children }) => {
 
   //Methods
   //Sets Loading to true
-  const setLoading = () => {
-    dispatch({
-      type: AuthEnum.setLoading
-    });
-  };
+  let requestBody: object;
 
   // For both Login and Registering users
-  const authUser = async (formData: FormData, url: string, type: string) => {};
+  const authUser = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
 
-  //Load user after registering or login
-  const loadUser = async (formData: FormData) => {};
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Failed");
+      }
+      const resData = await res.json();
+
+      if (resData.data.login) {
+        dispatch({
+          type: AuthEnum.loginUser,
+          payload: resData.data.login
+        });
+      } else {
+        dispatch({
+          type: AuthEnum.registerUser
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   //Register new user
-  const registerUser = async (formData: FormData) => {};
+  const registerUser = async ({ email, password }: FormData) => {
+    requestBody = {
+      query: `
+                  mutation{
+                      createUser(userInput: {email: "${email}" , password: "${password}"}) {
+                          _id
+                          email
+                      }
+                  }`
+    };
+    authUser();
+  };
 
   //Login  user
-  const loginUser = async (formData: FormData) => {};
+  const loginUser = async ({ email, password }: FormData) => {
+    requestBody = {
+      query: `
+              mutation{
+                  login(loginInput: {email: "${email}" , password: "${password}"}) {
+                      userId
+                      token
+                  }
+              }`
+    };
+    authUser();
+  };
 
   const logoutUser = async () => {};
 

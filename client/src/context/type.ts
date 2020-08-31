@@ -20,9 +20,8 @@ export type GraphlqlStateProps = {
 };
 
 export interface FormData {
-  userId: string;
-  token: string;
-  tokenExpiration: number;
+  email: string;
+  password: string;
 }
 
 export interface UpdateName {

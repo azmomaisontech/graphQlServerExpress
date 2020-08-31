@@ -19,16 +19,9 @@ const Auth: React.FC = () => {
 
     let requestBody;
     if (isLogin) {
-      requestBody = {
-        query: `
-              mutation{
-                  login(loginInput: {email: "${email}" , password: "${password}"}) {
-                      userId
-                      token
-                      tokenExpiration
-                  }
-              }`
-      };
+      if (loginUser) {
+        loginUser(user);
+      }
     } else {
       requestBody = {
         query: `
