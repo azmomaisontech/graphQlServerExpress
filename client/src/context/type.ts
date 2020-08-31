@@ -1,5 +1,3 @@
-import { string } from "prop-types";
-
 export enum AuthEnum {
   registerUser = "REGISTER_USER",
   googleUserAuth = "GOOGLE_USER_AUTH",
@@ -17,6 +15,7 @@ export enum AuthEnum {
 export type GraphlqlStateProps = {
   token: null | string;
   userId: null | string;
+  success: boolean;
 };
 
 export interface FormData {

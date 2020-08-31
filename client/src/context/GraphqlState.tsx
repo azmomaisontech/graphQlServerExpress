@@ -1,19 +1,11 @@
 import React, { useReducer, createContext } from "react";
 import { GraphqlReducer } from "./graphqlReducer";
-import {
-  ContextProps,
-  Props,
-  FormData,
-  UpdateName,
-  UpdateEmail,
-  UpdatePassword,
-  AuthEnum,
-  GraphlqlStateProps
-} from "./type";
+import { ContextProps, Props, FormData, AuthEnum, GraphlqlStateProps } from "./type";
 
 const initialState: GraphlqlStateProps = {
   userId: null,
-  token: null
+  token: null,
+  success: false
 };
 
 const AuthContext = createContext<Partial<ContextProps>>({});
@@ -68,6 +60,11 @@ const AuthState: React.FC<Props> = ({ children }) => {
                   }`
     };
     authUser();
+    setTimeout(() => {
+      dispatch({
+        type: AuthEnum.clearSuccess
+      });
+    }, 1000);
   };
 
   //Login  user
@@ -83,8 +80,6 @@ const AuthState: React.FC<Props> = ({ children }) => {
     };
     authUser();
   };
-
-  const logoutUser = async () => {};
 
   return (
     <AuthContext.Provider
