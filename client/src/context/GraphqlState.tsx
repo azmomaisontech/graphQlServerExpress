@@ -5,6 +5,7 @@ import { ContextProps, Props, FormData, AuthEnum, GraphlqlStateProps } from "./t
 const initialState: GraphlqlStateProps = {
   userId: null,
   token: null,
+  isAuthenticated: false,
   success: false
 };
 
@@ -86,6 +87,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
       value={{
         userId: state.userId,
         token: state.userId,
+        isAuthenticated: state.isAuthenticated,
         registerUser,
         loginUser
       }}

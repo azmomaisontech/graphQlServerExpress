@@ -6,7 +6,8 @@ export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
       return {
         ...state,
         userId: action.payload.userId,
-        token: action.payload.token
+        token: action.payload.token,
+        isAuthenticated: true
       };
     case AuthEnum.registerUser:
       return {

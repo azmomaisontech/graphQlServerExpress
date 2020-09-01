@@ -5,7 +5,7 @@ import "./Navbar.css";
 
 const Navbar: React.FC = () => {
   const authContext = useContext(AuthContext);
-  const { token } = authContext;
+  const { isAuthenticated } = authContext;
   return (
     <header className="main-navigation">
       <div className="main-navigation__logo">
@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
       </div>
       <nav className="main-navigation__list">
         <ul>
-          {!token && (
+          {!isAuthenticated && (
             <li>
               <NavLink to="/auth">Authentication</NavLink>
             </li>

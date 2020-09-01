@@ -15,6 +15,7 @@ export enum AuthEnum {
 export type GraphlqlStateProps = {
   token: null | string;
   userId: null | string;
+  isAuthenticated: boolean;
   success: boolean;
 };
 
