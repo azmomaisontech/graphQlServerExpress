@@ -22,9 +22,7 @@ const Navbar: React.FC = () => {
           <li>
             <NavLink to="/events">Events</NavLink>
           </li>
-          <li>
-            <NavLink to="/booking">Booking</NavLink>
-          </li>
+          <li>{isAuthenticated && <NavLink to="/booking">Booking</NavLink>}</li>
         </ul>
       </nav>
     </header>

@@ -1,3 +1,8 @@
 .main-content {
   margin: 4rem 2.5rem;
 }
+
+:root {
+  --primary-color: #009eff;
+  --secondary-color: #004f7f;
+}
