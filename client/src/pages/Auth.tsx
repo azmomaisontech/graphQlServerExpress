@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/GraphqlState";
 import "../pageStyles/Auth.css";
 
 const Auth: React.FC = () => {
   const graphqlContext = useContext(AuthContext);
-  const { loginUser, registerUser } = graphqlContext;
+  const { loginUser, registerUser, isAuthenticated } = graphqlContext;
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -38,6 +39,23 @@ const Auth: React.FC = () => {
   const switchModeHandler = () => {
     setIsLogin(!isLogin);
   };
+
+  //where to take the user after login
+  let history = useHistory();
+  let location = useLocation();
+
+  // if the user was redirected to the login page from another page,
+  //  they should be returned back there after registering, or just
+  // returned to the event page
+  const { from } = (location.state! as any) || { from: { pathname: "/events" } };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push(from);
+    }
+
+    //eslint-disable-next-line
+  }, [isAuthenticated, history]);
 
   return (
     <form onSubmit={handleSubmit} className="auth-form">
