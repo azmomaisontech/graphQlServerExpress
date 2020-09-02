@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../context/GraphqlState";
 import "./Navbar.css";
@@ -22,7 +22,16 @@ const Navbar: React.FC = () => {
           <li>
             <NavLink to="/events">Events</NavLink>
           </li>
-          <li>{isAuthenticated && <NavLink to="/booking">Booking</NavLink>}</li>
+          {isAuthenticated && (
+            <Fragment>
+              <li>
+                <NavLink to="/booking">Booking</NavLink>
+              </li>
+              <li>
+                <NavLink to="/logout">Log Out</NavLink>
+              </li>
+            </Fragment>
+          )}
         </ul>
       </nav>
     </header>
