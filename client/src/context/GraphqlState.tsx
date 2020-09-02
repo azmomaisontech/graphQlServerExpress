@@ -82,6 +82,13 @@ const AuthState: React.FC<Props> = ({ children }) => {
     authUser();
   };
 
+  //Logout user
+  const logoutUser = () => {
+    dispatch({
+      type: AuthEnum.logoutUser
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -89,7 +96,8 @@ const AuthState: React.FC<Props> = ({ children }) => {
         token: state.userId,
         isAuthenticated: state.isAuthenticated,
         registerUser,
-        loginUser
+        loginUser,
+        logoutUser
       }}
     >
       {children}

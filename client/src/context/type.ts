@@ -40,6 +40,7 @@ export interface UpdatePassword {
 export interface ContextProps extends GraphlqlStateProps {
   registerUser: (dataform: FormData) => void;
   loginUser: (dataform: FormData) => void;
+  logoutUser: () => void;
 }
 
 export interface Props {

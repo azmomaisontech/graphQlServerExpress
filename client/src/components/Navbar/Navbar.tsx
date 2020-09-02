@@ -5,7 +5,7 @@ import "./Navbar.css";
 
 const Navbar: React.FC = () => {
   const authContext = useContext(AuthContext);
-  const { isAuthenticated } = authContext;
+  const { isAuthenticated, logoutUser } = authContext;
   return (
     <header className="main-navigation">
       <div className="main-navigation__logo">
@@ -28,7 +28,16 @@ const Navbar: React.FC = () => {
                 <NavLink to="/booking">Booking</NavLink>
               </li>
               <li>
-                <NavLink to="/logout">Log Out</NavLink>
+                <button
+                  onClick={() => {
+                    if (logoutUser) {
+                      logoutUser();
+                    }
+                  }}
+                  className="btn"
+                >
+                  Logout
+                </button>
               </li>
             </Fragment>
           )}

@@ -43,3 +43,7 @@
 .main-navigation__list a.active {
   color: yellow;
 }
+
+.main-navigation__list button.btn {
+  cursor: pointer;
+}

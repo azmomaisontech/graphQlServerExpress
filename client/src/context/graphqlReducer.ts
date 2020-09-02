@@ -19,6 +19,13 @@ export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
         ...state,
         success: false
       };
+    case AuthEnum.logoutUser:
+      return {
+        ...state,
+        userId: null,
+        token: null,
+        isAuthenticated: false
+      };
     default:
       return state;
   }
