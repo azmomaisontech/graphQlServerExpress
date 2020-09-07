@@ -1,11 +1,13 @@
 import React from "react";
-import "../pageStyles/Events.css";
 import EventModal from "../components/Modal/EventModal";
+import "../pageStyles/Events.css";
+import Backdrop from "../components/Backdrop/Backdrop";
 
 const Events: React.FC = () => {
   return (
     <React.Fragment>
-      <EventModal title="New Event" canCancel={true} canConfirm={true}>
+      <Backdrop />
+      <EventModal title="New Event" canCancel canConfirm>
         <p>Modal Content</p>
       </EventModal>
       <div className="events-control">

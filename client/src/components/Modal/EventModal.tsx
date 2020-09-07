@@ -11,7 +11,9 @@ interface Props {
 const EventModal: React.FC<Props> = props => {
   return (
     <div className="modal">
-      <header>{props.title}</header>
+      <header className="modal__header">
+        <h1> {props.title}</h1>
+      </header>
       <section className="modal__content">{props.children}</section>
       <section className="modal__actions">
         {props.canCancel && <button className="btn">Cancel</button>}
