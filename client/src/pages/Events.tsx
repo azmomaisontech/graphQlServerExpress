@@ -1,7 +1,12 @@
 import React from "react";
+import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
-  return <h1> The Events Page </h1>;
+  return (
+    <div className="events-control">
+      <button className="btn">Create Event</button>
+    </div>
+  );
 };
 
 export default Events;
