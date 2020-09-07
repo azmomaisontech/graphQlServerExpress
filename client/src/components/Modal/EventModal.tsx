@@ -1,15 +1,16 @@
 import React from "react";
+import "./EventModal.css";
 
 interface Props {
   title: string;
   children: JSX.Element[] | JSX.Element;
-  canCancel: () => void;
-  canConfirm: () => void;
+  canCancel: boolean;
+  canConfirm: boolean;
 }
 
 const EventModal: React.FC<Props> = props => {
   return (
-    <div>
+    <div className="modal">
       <header>{props.title}</header>
       <section className="modal__content">{props.children}</section>
       <section className="modal__actions">
