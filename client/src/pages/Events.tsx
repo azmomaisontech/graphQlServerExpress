@@ -6,17 +6,40 @@ import Backdrop from "../components/Backdrop/Backdrop";
 const Events: React.FC = () => {
   const [creating, setCreating] = useState(false);
 
-  const titleRef = useRef<HTMLInputElement | null | undefined>();
-  const priceRef = useRef();
-  const dateRef = useRef();
-  const descriptionRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
   const openModal = () => {
     setCreating(true);
   };
 
+  interface Event {
+    title: string;
+    price: string;
+    date: string;
+    description: string;
+  }
+
   const handleConfirm = () => {
+    // let event: Partial<Event>;
+    let title, price, date, description;
     setCreating(false);
+    if (titleRef.current) {
+      title = titleRef.current.value;
+    }
+    if (priceRef.current) {
+      price = priceRef.current.value;
+    }
+    if (dateRef.current) {
+      date = dateRef.current.value;
+    }
+    if (descriptionRef.current) {
+      description = descriptionRef.current.value;
+    }
+    const event = { title, price, date, description };
+    console.log(event);
   };
 
   const handleCancel = () => {
@@ -35,15 +58,15 @@ const Events: React.FC = () => {
             </div>
             <div className="form-control">
               <label htmlFor="price">Price</label>
-              <input type="number" id="price" />
+              <input type="number" id="price" ref={priceRef} />
             </div>
             <div className="form-control">
               <label htmlFor="date">Date</label>
-              <input type="date" id="date" />
+              <input type="date" id="date" ref={dateRef} />
             </div>
             <div className="form-control">
               <label htmlFor="description">Description</label>
-              <textarea name="description" id="description" rows={4}></textarea>
+              <textarea name="description" id="description" rows={4} ref={descriptionRef}></textarea>
             </div>
           </form>
         </EventModal>
