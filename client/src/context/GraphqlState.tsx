@@ -1,6 +1,7 @@
 import React, { useReducer, createContext } from "react";
 import { GraphqlReducer } from "./graphqlReducer";
-import { ContextProps, Props, FormData, AuthEnum, GraphlqlStateProps } from "./type";
+import { ContextProps, Props, FormData, EventEnum, GraphlqlStateProps, CreateEvent } from "./type";
+import { async } from "q";
 
 const initialState: GraphlqlStateProps = {
   userId: null,
@@ -36,12 +37,12 @@ const AuthState: React.FC<Props> = ({ children }) => {
 
       if (resData.data.login) {
         dispatch({
-          type: AuthEnum.loginUser,
+          type: EventEnum.loginUser,
           payload: resData.data.login
         });
       } else {
         dispatch({
-          type: AuthEnum.registerUser
+          type: EventEnum.registerUser
         });
       }
     } catch (err) {
@@ -63,7 +64,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
     authUser();
     setTimeout(() => {
       dispatch({
-        type: AuthEnum.clearSuccess
+        type: EventEnum.clearSuccess
       });
     }, 1000);
   };
@@ -85,8 +86,49 @@ const AuthState: React.FC<Props> = ({ children }) => {
   //Logout user
   const logoutUser = () => {
     dispatch({
-      type: AuthEnum.logoutUser
+      type: EventEnum.logoutUser
     });
+  };
+
+  const createEvent = async (formData: CreateEvent) => {
+    const eventBody = {
+      query: `
+              mutation{
+                  createEvent(eventInput: ${formData} ) {
+                    _id
+                    title
+                    description
+                    price
+                    date
+                    creator{
+                      _id
+                      email
+                    }
+                  }
+              }`
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
+        body: JSON.stringify(eventBody),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Failed");
+      }
+      const resData = await res.json();
+
+      dispatch({
+        type: EventEnum.createEvent,
+        payload: resData.data.login
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -97,7 +139,8 @@ const AuthState: React.FC<Props> = ({ children }) => {
         isAuthenticated: state.isAuthenticated,
         registerUser,
         loginUser,
-        logoutUser
+        logoutUser,
+        createEvent
       }}
     >
       {children}

@@ -15,13 +15,6 @@ const Events: React.FC = () => {
     setCreating(true);
   };
 
-  interface Event {
-    title: string;
-    price: string;
-    date: string;
-    description: string;
-  }
-
   const handleConfirm = () => {
     // let event: Partial<Event>;
     let title, price, date, description;
@@ -30,7 +23,7 @@ const Events: React.FC = () => {
       title = titleRef.current.value;
     }
     if (priceRef.current) {
-      price = priceRef.current.value;
+      price = +priceRef.current.value;
     }
     if (dateRef.current) {
       date = dateRef.current.value;
@@ -62,7 +55,7 @@ const Events: React.FC = () => {
             </div>
             <div className="form-control">
               <label htmlFor="date">Date</label>
-              <input type="date" id="date" ref={dateRef} />
+              <input type="datetime-local" id="date" ref={dateRef} />
             </div>
             <div className="form-control">
               <label htmlFor="description">Description</label>

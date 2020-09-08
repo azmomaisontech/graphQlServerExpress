@@ -1,6 +1,6 @@
-export enum AuthEnum {
+export enum EventEnum {
   registerUser = "REGISTER_USER",
-  googleUserAuth = "GOOGLE_USER_AUTH",
+  createEvent = "CREATE_EVENT",
   loginUser = "LOGIN_USER",
   userLoaded = "USER_LOADED",
   updateUser = "UPDATE_USER",
@@ -24,8 +24,11 @@ export interface FormData {
   password: string;
 }
 
-export interface UpdateName {
-  name: string;
+export interface CreateEvent {
+  title: string;
+  price: number;
+  date: string;
+  description: string;
 }
 
 export interface UpdateEmail {
@@ -41,6 +44,7 @@ export interface ContextProps extends GraphlqlStateProps {
   registerUser: (dataform: FormData) => void;
   loginUser: (dataform: FormData) => void;
   logoutUser: () => void;
+  createEvent: (dataform: CreateEvent) => void;
 }
 
 export interface Props {

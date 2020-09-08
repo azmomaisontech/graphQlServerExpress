@@ -1,25 +1,25 @@
-import { AuthEnum, GraphlqlStateProps } from "./type";
+import { EventEnum, GraphlqlStateProps } from "./type";
 
 export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
   switch (action.type) {
-    case AuthEnum.loginUser:
+    case EventEnum.loginUser:
       return {
         ...state,
         userId: action.payload.userId,
         token: action.payload.token,
         isAuthenticated: true
       };
-    case AuthEnum.registerUser:
+    case EventEnum.registerUser:
       return {
         ...state,
         success: true
       };
-    case AuthEnum.clearSuccess:
+    case EventEnum.clearSuccess:
       return {
         ...state,
         success: false
       };
-    case AuthEnum.logoutUser:
+    case EventEnum.logoutUser:
       return {
         ...state,
         userId: null,
