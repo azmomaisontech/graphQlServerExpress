@@ -2,7 +2,6 @@ import React, { useState, useRef, useContext } from "react";
 import EventModal from "../components/Modal/EventModal";
 import Backdrop from "../components/Backdrop/Backdrop";
 import { AuthContext } from "../context/GraphqlState";
-import { CreateEvent } from "../context/type";
 import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
@@ -21,7 +20,13 @@ const Events: React.FC = () => {
 
   const handleConfirm = () => {
     setCreating(false);
-    const event: Partial<CreateEvent> = {};
+    let event = {
+      title: "",
+      price: 0,
+      date: "",
+      description: ""
+    };
+
     if (titleRef.current) {
       event.title = titleRef.current.value;
     }
@@ -35,6 +40,7 @@ const Events: React.FC = () => {
       event.description = descriptionRef.current.value;
     }
     console.log(event);
+
     if (createEvent) {
       createEvent(event);
     }

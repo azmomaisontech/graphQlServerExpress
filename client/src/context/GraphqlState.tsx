@@ -94,7 +94,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
     const eventBody = {
       query: `
               mutation{
-                  createEvent(eventInput: ${formData} ) {
+                  createEvent( ${formData} ) {
                     _id
                     title
                     description
@@ -125,7 +125,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
       console.log(resData);
       dispatch({
         type: EventEnum.createEvent,
-        payload: resData as object
+        payload: resData
       });
     } catch (err) {
       console.error(err);
