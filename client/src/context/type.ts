@@ -12,11 +12,21 @@ export enum EventEnum {
   clearSuccess = "CLEAR_SUCCESS"
 }
 
+export interface Event {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  date: string;
+  creator: object;
+}
+
 export type GraphlqlStateProps = {
   token: null | string;
   userId: null | string;
   isAuthenticated: boolean;
   success: boolean;
+  events: [];
 };
 
 export interface FormData {
@@ -29,15 +39,6 @@ export interface CreateEvent {
   price: number;
   date: string;
   description: string;
-}
-
-export interface UpdateEmail {
-  email: string;
-}
-
-export interface UpdatePassword {
-  currentPassword: string;
-  newPassword: string;
 }
 
 export interface ContextProps extends GraphlqlStateProps {

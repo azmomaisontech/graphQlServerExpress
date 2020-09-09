@@ -1,9 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import EventModal from "../components/Modal/EventModal";
-import "../pageStyles/Events.css";
 import Backdrop from "../components/Backdrop/Backdrop";
+import { AuthContext } from "../context/GraphqlState";
+import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
+  const graphqlContext = useContext(AuthContext);
+  const { createEvent } = graphqlContext;
   const [creating, setCreating] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -32,7 +35,9 @@ const Events: React.FC = () => {
       description = descriptionRef.current.value;
     }
     const event = { title, price, date, description };
-    console.log(event);
+    if (createEvent) {
+      createEvent(event);
+    }
   };
 
   const handleCancel = () => {

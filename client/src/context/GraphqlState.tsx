@@ -1,13 +1,13 @@
 import React, { useReducer, createContext } from "react";
 import { GraphqlReducer } from "./graphqlReducer";
 import { ContextProps, Props, FormData, EventEnum, GraphlqlStateProps, CreateEvent } from "./type";
-import { async } from "q";
 
 const initialState: GraphlqlStateProps = {
   userId: null,
   token: null,
   isAuthenticated: false,
-  success: false
+  success: false,
+  events: []
 };
 
 const AuthContext = createContext<Partial<ContextProps>>({});
@@ -113,7 +113,8 @@ const AuthState: React.FC<Props> = ({ children }) => {
         method: "POST",
         body: JSON.stringify(eventBody),
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + state.token
         }
       });
 
@@ -121,10 +122,10 @@ const AuthState: React.FC<Props> = ({ children }) => {
         throw new Error("Failed");
       }
       const resData = await res.json();
-
+      console.log(resData);
       dispatch({
         type: EventEnum.createEvent,
-        payload: resData.data.login
+        payload: resData as object
       });
     } catch (err) {
       console.error(err);
