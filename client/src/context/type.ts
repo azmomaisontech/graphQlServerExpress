@@ -26,7 +26,7 @@ export type GraphlqlStateProps = {
   userId: null | string;
   isAuthenticated: boolean;
   success: boolean;
-  events: [];
+  events: any;
 };
 
 export interface FormData {
@@ -36,9 +36,9 @@ export interface FormData {
 
 export interface CreateEvent {
   title: string;
-  price: number;
-  date: string;
-  description: string;
+  price: number | undefined;
+  date: string | undefined;
+  description: string | undefined;
 }
 
 export interface ContextProps extends GraphlqlStateProps {

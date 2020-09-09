@@ -1,6 +1,6 @@
 import { EventEnum, GraphlqlStateProps } from "./type";
 
-export const GraphqlReducer = (state: GraphlqlStateProps, action: { type: string; payload: any }) => {
+export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
   switch (action.type) {
     case EventEnum.loginUser:
       return {
