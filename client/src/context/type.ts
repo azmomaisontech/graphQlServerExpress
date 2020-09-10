@@ -37,7 +37,6 @@ export interface FormData {
 export interface CreateEvent {
   title: string;
   price: number;
-  date: string;
   description: string;
 }
 

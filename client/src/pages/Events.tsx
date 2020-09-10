@@ -11,7 +11,6 @@ const Events: React.FC = () => {
 
   const titleRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
   const openModal = () => {
@@ -23,7 +22,6 @@ const Events: React.FC = () => {
     let event = {
       title: "",
       price: 0,
-      date: "",
       description: ""
     };
 
@@ -33,13 +31,9 @@ const Events: React.FC = () => {
     if (priceRef.current) {
       event.price = +priceRef.current.value;
     }
-    if (dateRef.current) {
-      event.date = dateRef.current.value;
-    }
     if (descriptionRef.current) {
       event.description = descriptionRef.current.value;
     }
-    console.log(event);
 
     if (createEvent) {
       createEvent(event);
@@ -63,10 +57,6 @@ const Events: React.FC = () => {
             <div className="form-control">
               <label htmlFor="price">Price</label>
               <input type="number" id="price" ref={priceRef} />
-            </div>
-            <div className="form-control">
-              <label htmlFor="date">Date</label>
-              <input type="datetime-local" id="date" ref={dateRef} />
             </div>
             <div className="form-control">
               <label htmlFor="description">Description</label>

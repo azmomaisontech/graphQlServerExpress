@@ -91,11 +91,11 @@ const AuthState: React.FC<Props> = ({ children }) => {
   };
 
   const createEvent = async (formData: CreateEvent) => {
-    const { title, description, price, date } = formData;
+    const { title, description, price } = formData;
     const eventBody = {
       query: `
               mutation{
-                  createEvent(eventInput: {title: "${title}" , description: "${description}", price: ${price}, date: "${date}"}   ) {
+                  createEvent(eventInput: {title: "${title}" , description: "${description}", price: ${price}}   ) {
                     _id
                     title
                     description
