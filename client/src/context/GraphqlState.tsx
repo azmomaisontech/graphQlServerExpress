@@ -132,6 +132,46 @@ const AuthState: React.FC<Props> = ({ children }) => {
     }
   };
 
+  const fetchEvents = async () => {
+    const eventBody = {
+      query: `
+              query{
+                events {
+                    _id
+                    title
+                    description
+                    price
+                    date
+                    creator{
+                      _id
+                    }
+                  }
+              }`
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
+        body: JSON.stringify(eventBody),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Failed");
+      }
+      const resData = await res.json();
+      console.log(resData);
+      dispatch({
+        type: EventEnum.fetchEvents,
+        payload: resData.data.events
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -141,7 +181,8 @@ const AuthState: React.FC<Props> = ({ children }) => {
         registerUser,
         loginUser,
         logoutUser,
-        createEvent
+        createEvent,
+        fetchEvents
       }}
     >
       {children}

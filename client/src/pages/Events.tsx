@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import EventModal from "../components/Modal/EventModal";
 import Backdrop from "../components/Backdrop/Backdrop";
 import { AuthContext } from "../context/GraphqlState";
@@ -6,7 +6,7 @@ import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
   const graphqlContext = useContext(AuthContext);
-  const { createEvent } = graphqlContext;
+  const { createEvent, fetchEvents } = graphqlContext;
   const [creating, setCreating] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -44,6 +44,12 @@ const Events: React.FC = () => {
     setCreating(false);
   };
 
+  useEffect(() => {
+    if (fetchEvents) {
+      fetchEvents();
+    }
+  }, []);
+
   return (
     <React.Fragment>
       {creating && <Backdrop />}
@@ -71,6 +77,9 @@ const Events: React.FC = () => {
           Create Event
         </button>
       </div>
+      <ul className="events__list">
+        <li className="events__list-item">Test</li>
+      </ul>
     </React.Fragment>
   );
 };

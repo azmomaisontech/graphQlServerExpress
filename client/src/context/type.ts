@@ -2,6 +2,7 @@ export enum EventEnum {
   registerUser = "REGISTER_USER",
   createEvent = "CREATE_EVENT",
   loginUser = "LOGIN_USER",
+  fetchEvents = "FETCH_EVENTS",
   userLoaded = "USER_LOADED",
   updateUser = "UPDATE_USER",
   logoutUser = "LOGOUT_USER",
@@ -45,6 +46,7 @@ export interface ContextProps extends GraphlqlStateProps {
   loginUser: (dataform: FormData) => void;
   logoutUser: () => void;
   createEvent: (dataform: CreateEvent) => void;
+  fetchEvents: () => void;
 }
 
 export interface Props {
