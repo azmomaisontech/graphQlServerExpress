@@ -2,11 +2,12 @@ import React, { useState, useRef, useContext, useEffect } from "react";
 import EventModal from "../components/Modal/EventModal";
 import Backdrop from "../components/Backdrop/Backdrop";
 import { AuthContext } from "../context/GraphqlState";
+import EventList from "../components/Event/EventList";
 import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
   const graphqlContext = useContext(AuthContext);
-  const { createEvent, fetchEvents } = graphqlContext;
+  const { createEvent, fetchEvents, events, isAuthenticated } = graphqlContext;
   const [creating, setCreating] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -48,6 +49,7 @@ const Events: React.FC = () => {
     if (fetchEvents) {
       fetchEvents();
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -71,14 +73,16 @@ const Events: React.FC = () => {
           </form>
         </EventModal>
       )}
-      <div className="events-control">
-        <p>Share your own Events!</p>
-        <button className="btn" onClick={openModal}>
-          Create Event
-        </button>
-      </div>
+      {isAuthenticated && (
+        <div className="events-control">
+          <p>Share your own Events!</p>
+          <button className="btn" onClick={openModal}>
+            Create Event
+          </button>
+        </div>
+      )}
       <ul className="events__list">
-        <li className="events__list-item">Test</li>
+        {events && events.map((event: any) => <EventList key={event.id} event={event} />)}
       </ul>
     </React.Fragment>
   );

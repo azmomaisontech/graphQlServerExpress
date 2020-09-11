@@ -122,7 +122,6 @@ const AuthState: React.FC<Props> = ({ children }) => {
         throw new Error("Failed");
       }
       const resData = await res.json();
-      console.log(resData.data.createEvent);
       dispatch({
         type: EventEnum.createEvent,
         payload: resData.data.createEvent
@@ -162,7 +161,6 @@ const AuthState: React.FC<Props> = ({ children }) => {
         throw new Error("Failed");
       }
       const resData = await res.json();
-      console.log(resData);
       dispatch({
         type: EventEnum.fetchEvents,
         payload: resData.data.events
