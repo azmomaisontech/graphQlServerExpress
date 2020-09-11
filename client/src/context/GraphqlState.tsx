@@ -103,7 +103,6 @@ const AuthState: React.FC<Props> = ({ children }) => {
                     date
                     creator{
                       _id
-                      email
                     }
                   }
               }`
@@ -123,10 +122,10 @@ const AuthState: React.FC<Props> = ({ children }) => {
         throw new Error("Failed");
       }
       const resData = await res.json();
-      console.log(resData);
+      console.log(resData.data.createEvent);
       dispatch({
         type: EventEnum.createEvent,
-        payload: resData
+        payload: resData.data.createEvent
       });
     } catch (err) {
       console.error(err);

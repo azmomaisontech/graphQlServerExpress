@@ -6,6 +6,7 @@ import Events from "./pages/Events";
 import Booking from "./pages/Booking";
 import Navbar from "./components/Navbar/Navbar";
 import { AuthState } from "./context/GraphqlState";
+import PrivateRoute from "./util/auth/PrivateRoute";
 import "./App.css";
 
 const App = () => {
@@ -17,8 +18,8 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/auth" component={Auth} />
-            <Route exact path="/events" component={Events} />
-            <Route exact path="/bookings" component={Booking} />
+            <PrivateRoute exact path="/events" component={Events} />
+            <PrivateRoute exact path="/bookings" component={Booking} />
             <Redirect to="/" />
           </Switch>
         </main>
