@@ -29,7 +29,7 @@ export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
     case EventEnum.createEvent:
       return {
         ...state,
-        events: state.events.push(action.payload)
+        events: [...state.events, action.payload]
       };
     case EventEnum.fetchEvents:
       return {
