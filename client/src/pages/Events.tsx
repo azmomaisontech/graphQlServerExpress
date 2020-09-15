@@ -7,7 +7,7 @@ import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
   const graphqlContext = useContext(AuthContext);
-  const { createEvent, fetchEvents, events, isAuthenticated } = graphqlContext;
+  const { createEvent, fetchEvents, userId, events, isAuthenticated } = graphqlContext;
   const [creating, setCreating] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -82,7 +82,10 @@ const Events: React.FC = () => {
         </div>
       )}
       <ul className="events__list">
-        {events && events.map((event: any) => <EventList key={event._id} event={event.title} />)}
+        {events &&
+          events.map((event: any) => (
+            <EventList key={event._id} event={event.title} creator={event.creator._id} userId={userId!} />
+          ))}
       </ul>
     </React.Fragment>
   );
