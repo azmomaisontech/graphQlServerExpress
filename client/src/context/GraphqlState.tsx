@@ -176,6 +176,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
         userId: state.userId,
         token: state.userId,
         isAuthenticated: state.isAuthenticated,
+        events: state.events,
         registerUser,
         loginUser,
         logoutUser,
