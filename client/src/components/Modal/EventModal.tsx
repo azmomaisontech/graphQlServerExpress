@@ -6,6 +6,7 @@ interface Props {
   children: JSX.Element[] | JSX.Element;
   canCancel: boolean;
   canConfirm: boolean;
+  confirmText: string;
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -25,7 +26,7 @@ const EventModal: React.FC<Props> = props => {
         )}
         {props.canConfirm && (
           <button className="btn" onClick={props.onConfirm}>
-            Confirm
+            {props.confirmText}
           </button>
         )}
       </section>

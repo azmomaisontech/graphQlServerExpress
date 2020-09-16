@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from "react";
 import { GraphqlReducer } from "./graphqlReducer";
-import { ContextProps, Props, FormData, EventEnum, GraphlqlStateProps, CreateEvent } from "./type";
+import { ContextProps, Props, FormData, EventEnum, GraphlqlStateProps, CreateEvent, Event } from "./type";
 
 const initialState: GraphlqlStateProps = {
   userId: null,
@@ -8,6 +8,7 @@ const initialState: GraphlqlStateProps = {
   isAuthenticated: false,
   success: false,
   events: [],
+  event: null,
   loading: false
 };
 
@@ -174,6 +175,19 @@ const AuthState: React.FC<Props> = ({ children }) => {
     }
   };
 
+  const eventSelected = (event: Event) => {
+    dispatch({
+      type: EventEnum.eventSelected,
+      payload: event
+    });
+  };
+
+  const clearSelectedEvent = () => {
+    dispatch({
+      type: EventEnum.clearSelectedEvent
+    });
+  };
+
   const setLoading = () => {
     dispatch({
       type: EventEnum.setLoading
@@ -187,12 +201,15 @@ const AuthState: React.FC<Props> = ({ children }) => {
         token: state.userId,
         isAuthenticated: state.isAuthenticated,
         events: state.events,
+        event: state.event,
         loading: state.loading,
         registerUser,
         loginUser,
         logoutUser,
         createEvent,
-        fetchEvents
+        fetchEvents,
+        eventSelected,
+        clearSelectedEvent
       }}
     >
       {children}

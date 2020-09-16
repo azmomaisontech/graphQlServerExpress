@@ -3,6 +3,8 @@ export enum EventEnum {
   createEvent = "CREATE_EVENT",
   loginUser = "LOGIN_USER",
   fetchEvents = "FETCH_EVENTS",
+  eventSelected = "EVENT_SELECTED",
+  clearSelectedEvent = "CLEAR_SELECTED_EVENT",
   userLoaded = "USER_LOADED",
   updateUser = "UPDATE_USER",
   logoutUser = "LOGOUT_USER",
@@ -29,6 +31,7 @@ export type GraphlqlStateProps = {
   success: boolean;
   events: any;
   loading: boolean;
+  event: null | Event;
 };
 
 export interface FormData {
@@ -48,6 +51,8 @@ export interface ContextProps extends GraphlqlStateProps {
   logoutUser: () => void;
   createEvent: (dataform: CreateEvent) => void;
   fetchEvents: () => void;
+  eventSelected: (event: Event) => void;
+  clearSelectedEvent: () => void;
 }
 
 export interface Props {

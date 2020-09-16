@@ -40,6 +40,16 @@ export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
         events: action.payload,
         loading: false
       };
+    case EventEnum.eventSelected:
+      return {
+        ...state,
+        event: action.payload
+      };
+    case EventEnum.clearSelectedEvent:
+      return {
+        ...state,
+        event: null
+      };
     case EventEnum.setLoading:
       return {
         ...state,

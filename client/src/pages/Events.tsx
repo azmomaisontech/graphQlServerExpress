@@ -4,11 +4,22 @@ import Backdrop from "../components/Backdrop/Backdrop";
 import { AuthContext } from "../context/GraphqlState";
 import EventList from "../components/Event/EventList";
 import Spinner from "../components/Spinner/Spinner";
+import { Event } from "../context/type";
 import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
   const graphqlContext = useContext(AuthContext);
-  const { createEvent, fetchEvents, userId, events, isAuthenticated, loading } = graphqlContext;
+  const {
+    createEvent,
+    fetchEvents,
+    userId,
+    events,
+    isAuthenticated,
+    loading,
+    eventSelected,
+    clearSelectedEvent,
+    event
+  } = graphqlContext;
   const [creating, setCreating] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -46,6 +57,18 @@ const Events: React.FC = () => {
     setCreating(false);
   };
 
+  const handleShowBookingModal = (event: Event) => {
+    if (eventSelected) {
+      eventSelected(event);
+    }
+  };
+
+  const handleCancelBooking = () => {
+    if (clearSelectedEvent) {
+      clearSelectedEvent();
+    }
+  };
+
   useEffect(() => {
     if (fetchEvents) {
       fetchEvents();
@@ -55,9 +78,16 @@ const Events: React.FC = () => {
 
   return (
     <React.Fragment>
-      {creating && <Backdrop />}
+      {(creating || event) && <Backdrop />}
       {creating && (
-        <EventModal title="New Event" canCancel canConfirm onCancel={handleCancel} onConfirm={handleConfirm}>
+        <EventModal
+          title="New Event"
+          canCancel
+          canConfirm
+          confirmText="Confirm"
+          onCancel={handleCancel}
+          onConfirm={handleConfirm}
+        >
           <form>
             <div className="form-control">
               <label htmlFor="title">Title</label>
@@ -74,6 +104,22 @@ const Events: React.FC = () => {
           </form>
         </EventModal>
       )}
+      {event && (
+        <EventModal
+          title="Book Event"
+          canCancel
+          canConfirm
+          confirmText="Book Event"
+          onCancel={handleCancelBooking}
+          onConfirm={handleConfirm}
+        >
+          <h1>{event.title}</h1>
+          <h2>
+            £{event.price} - {new Date(+event.date).toLocaleDateString()}
+          </h2>
+          <p>{event.description}</p>
+        </EventModal>
+      )}
       {isAuthenticated && (
         <div className="events-control">
           <p>Share your own Events!</p>
@@ -86,7 +132,10 @@ const Events: React.FC = () => {
         <Spinner />
       ) : (
         <ul className="events__list">
-          {events && events.map((event: any) => <EventList key={event._id} event={event} userId={userId!} />)}
+          {events &&
+            events.map((event: any) => (
+              <EventList key={event._id} event={event} userId={userId!} showBookingModal={handleShowBookingModal} />
+            ))}
         </ul>
       )}
     </React.Fragment>
