@@ -4,6 +4,8 @@ import "../../pageStyles/Events.css";
 interface Props {
   event: {
     title: string;
+    price: number;
+    date: string;
     creator: {
       _id: string;
     };
@@ -12,11 +14,16 @@ interface Props {
 }
 
 const EventList: React.FC<Props> = ({ event, userId }) => {
+  const date = new Date(event.date).toLocaleDateString();
+  console.log(date);
+  console.log(event.date);
   return (
     <li className="events__list-item">
       <div>
         <h1> {event.title}</h1>
-        <h2>$19.99</h2>
+        <h2>
+          £{event.price} - {date}
+        </h2>
       </div>
       <div>
         {event.creator._id === userId ? (
