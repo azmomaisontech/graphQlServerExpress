@@ -7,12 +7,14 @@ export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
         ...state,
         userId: action.payload.userId,
         token: action.payload.token,
-        isAuthenticated: true
+        isAuthenticated: true,
+        loading: false
       };
     case EventEnum.registerUser:
       return {
         ...state,
-        success: true
+        success: true,
+        loading: false
       };
     case EventEnum.clearSuccess:
       return {
@@ -29,12 +31,19 @@ export const GraphqlReducer = (state: GraphlqlStateProps, action: any) => {
     case EventEnum.createEvent:
       return {
         ...state,
-        events: [...state.events, action.payload]
+        events: [...state.events, action.payload],
+        loading: false
       };
     case EventEnum.fetchEvents:
       return {
         ...state,
-        events: action.payload
+        events: action.payload,
+        loading: false
+      };
+    case EventEnum.setLoading:
+      return {
+        ...state,
+        loading: true
       };
     default:
       return state;

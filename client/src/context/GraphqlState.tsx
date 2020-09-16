@@ -7,7 +7,8 @@ const initialState: GraphlqlStateProps = {
   token: null,
   isAuthenticated: false,
   success: false,
-  events: []
+  events: [],
+  loading: false
 };
 
 const AuthContext = createContext<Partial<ContextProps>>({});
@@ -21,6 +22,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
 
   // For both Login and Registering users
   const authUser = async () => {
+    setLoading();
     try {
       const res = await fetch("http://localhost:5000/graphql", {
         method: "POST",
@@ -92,6 +94,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
 
   const createEvent = async (formData: CreateEvent) => {
     const { title, description, price } = formData;
+    setLoading();
     const eventBody = {
       query: `
               mutation{
@@ -132,6 +135,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
   };
 
   const fetchEvents = async () => {
+    setLoading();
     const eventBody = {
       query: `
               query{
@@ -170,6 +174,12 @@ const AuthState: React.FC<Props> = ({ children }) => {
     }
   };
 
+  const setLoading = () => {
+    dispatch({
+      type: EventEnum.setLoading
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -177,6 +187,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
         token: state.userId,
         isAuthenticated: state.isAuthenticated,
         events: state.events,
+        loading: state.loading,
         registerUser,
         loginUser,
         logoutUser,

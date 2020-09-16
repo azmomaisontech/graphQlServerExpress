@@ -3,11 +3,12 @@ import EventModal from "../components/Modal/EventModal";
 import Backdrop from "../components/Backdrop/Backdrop";
 import { AuthContext } from "../context/GraphqlState";
 import EventList from "../components/Event/EventList";
+import Spinner from "../components/Spinner/Spinner";
 import "../pageStyles/Events.css";
 
 const Events: React.FC = () => {
   const graphqlContext = useContext(AuthContext);
-  const { createEvent, fetchEvents, userId, events, isAuthenticated } = graphqlContext;
+  const { createEvent, fetchEvents, userId, events, isAuthenticated, loading } = graphqlContext;
   const [creating, setCreating] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -81,9 +82,13 @@ const Events: React.FC = () => {
           </button>
         </div>
       )}
-      <ul className="events__list">
-        {events && events.map((event: any) => <EventList key={event._id} event={event} userId={userId!} />)}
-      </ul>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <ul className="events__list">
+          {events && events.map((event: any) => <EventList key={event._id} event={event} userId={userId!} />)}
+        </ul>
+      )}
     </React.Fragment>
   );
 };

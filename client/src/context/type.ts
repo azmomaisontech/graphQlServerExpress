@@ -28,6 +28,7 @@ export type GraphlqlStateProps = {
   isAuthenticated: boolean;
   success: boolean;
   events: any;
+  loading: boolean;
 };
 
 export interface FormData {
