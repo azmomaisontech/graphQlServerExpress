@@ -15,7 +15,7 @@ module.exports = {
     }
     try {
       const booking = new Booking({
-        user: "5f2aae65b809bc45d6cd5f8f",
+        user: req.userId,
         event: args.eventId
       });
 

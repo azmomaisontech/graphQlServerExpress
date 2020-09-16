@@ -5,10 +5,8 @@ export enum EventEnum {
   fetchEvents = "FETCH_EVENTS",
   eventSelected = "EVENT_SELECTED",
   clearSelectedEvent = "CLEAR_SELECTED_EVENT",
-  userLoaded = "USER_LOADED",
-  updateUser = "UPDATE_USER",
+  bookEvent = "BOOK_EVENT",
   logoutUser = "LOGOUT_USER",
-  updatePassword = "UPDATE_PASSWORD",
   setLoading = "SET_LOADING",
   authError = "AUTH_ERROR",
   clearError = "CLEAR_ERROR",
@@ -30,6 +28,7 @@ export type GraphlqlStateProps = {
   isAuthenticated: boolean;
   success: boolean;
   events: any;
+  bookings: any;
   loading: boolean;
   event: null | Event;
 };
@@ -53,6 +52,7 @@ export interface ContextProps extends GraphlqlStateProps {
   fetchEvents: () => void;
   eventSelected: (event: Event) => void;
   clearSelectedEvent: () => void;
+  bookEvent: () => void;
 }
 
 export interface Props {

@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
           {isAuthenticated && (
             <Fragment>
               <li>
-                <NavLink to="/booking">Booking</NavLink>
+                <NavLink to="/bookings">Booking</NavLink>
               </li>
               <li>
                 <button

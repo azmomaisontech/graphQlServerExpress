@@ -18,7 +18,8 @@ const Events: React.FC = () => {
     loading,
     eventSelected,
     clearSelectedEvent,
-    event
+    event,
+    bookEvent
   } = graphqlContext;
   const [creating, setCreating] = useState(false);
 
@@ -60,6 +61,15 @@ const Events: React.FC = () => {
   const handleShowBookingModal = (event: Event) => {
     if (eventSelected) {
       eventSelected(event);
+    }
+  };
+
+  const handleConfirmBooking = () => {
+    if (bookEvent) {
+      bookEvent();
+    }
+    if (clearSelectedEvent) {
+      clearSelectedEvent();
     }
   };
 
@@ -108,10 +118,10 @@ const Events: React.FC = () => {
         <EventModal
           title="Book Event"
           canCancel
-          canConfirm
+          canConfirm={isAuthenticated!}
           confirmText="Book Event"
           onCancel={handleCancelBooking}
-          onConfirm={handleConfirm}
+          onConfirm={handleConfirmBooking}
         >
           <h1>{event.title}</h1>
           <h2>

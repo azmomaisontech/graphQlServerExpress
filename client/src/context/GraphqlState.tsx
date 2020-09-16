@@ -8,6 +8,7 @@ const initialState: GraphlqlStateProps = {
   isAuthenticated: false,
   success: false,
   events: [],
+  bookings: [],
   event: null,
   loading: false
 };
@@ -188,6 +189,50 @@ const AuthState: React.FC<Props> = ({ children }) => {
     });
   };
 
+  const bookEvent = async () => {
+    setLoading();
+    const bookBody = {
+      query: `
+            mutation {
+              bookEvent(eventId: "5f5b3e62d42618338157edc0" ){
+                _id
+                createdAt
+                updatedAt
+                event {
+                  _id
+                  title
+                  description
+                   price
+                }
+                user {
+                   _id
+                }
+        }
+      }`
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
+        body: JSON.stringify(bookBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + state.token
+        }
+      });
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Failed");
+      }
+      const resData = await res.json();
+      dispatch({
+        type: EventEnum.bookEvent,
+        payload: resData.data.bookEvent
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const setLoading = () => {
     dispatch({
       type: EventEnum.setLoading
@@ -209,7 +254,8 @@ const AuthState: React.FC<Props> = ({ children }) => {
         createEvent,
         fetchEvents,
         eventSelected,
-        clearSelectedEvent
+        clearSelectedEvent,
+        bookEvent
       }}
     >
       {children}
