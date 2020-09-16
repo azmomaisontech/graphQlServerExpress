@@ -82,10 +82,7 @@ const Events: React.FC = () => {
         </div>
       )}
       <ul className="events__list">
-        {events &&
-          events.map((event: any) => (
-            <EventList key={event._id} event={event.title} creator={event.creator._id} userId={userId!} />
-          ))}
+        {events && events.map((event: any) => <EventList key={event._id} event={event} userId={userId!} />)}
       </ul>
     </React.Fragment>
   );
